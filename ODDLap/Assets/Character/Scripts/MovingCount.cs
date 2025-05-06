@@ -28,8 +28,7 @@ public class MovingCount : MonoBehaviour
     {
         if (remainCount == 0)
         {
-            //die
-            Debug.Log("이동횟수 부족");
+            Debug.Log("남은 이동횟수 = 0");
         }
         text.text = remainCount.ToString();
     }

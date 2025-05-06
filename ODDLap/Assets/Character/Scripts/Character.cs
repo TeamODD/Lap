@@ -86,8 +86,9 @@ public class Character : MonoBehaviour
                 // 상자 앞으로 장애물 있는지 확인
                 Vector3 boxNextPos = hit.collider.transform.position + (Vector3)(nextDir * gridSize);
                 obstacle = Physics2D.OverlapCircle(boxNextPos, checkRadius, boxLayer | obstacleLayer);
+                Collider2D obstacle2 = Physics2D.OverlapCircle(boxNextPos, checkRadius, boxLayer | exitDoorLayer);
 
-                if (obstacle == null)
+                if (obstacle == null && obstacle2 == null)
                 {
                     StartCoroutine(MoveBoxThenPlayer(hit.collider.gameObject, boxNextPos, targetPos));
                 }
@@ -95,7 +96,7 @@ public class Character : MonoBehaviour
                 {
                     // 발차기 모션 후 카운트 감소
                     Debug.Log("상자 뒤에 벽");
-                    movingCount.MoveCounting();
+                    movingCount.MoveCounting();;
                     return;
                 }
             }
@@ -124,9 +125,10 @@ public class Character : MonoBehaviour
 
         transform.position = target;
         velocity = Vector3.zero;
-        yield return new WaitForSeconds(0.15f); // 헬 테이커처럼 움직임 간 약간의 텀
+        anim.SetBool("isMove", false); // 임시로 보기 좋게 위로 올림
+        yield return new WaitForSeconds(0.2f); // 헬 테이커처럼 움직임 간 약간의 텀
 
-        isMoving = false; anim.SetBool("isMove", false);
+        isMoving = false;
         movingCount.MoveCounting(); // 움직임 모션 이후 카운트 1 감소
 
         TryMoveNext();
@@ -134,7 +136,7 @@ public class Character : MonoBehaviour
 
     private IEnumerator MoveBox(GameObject box, Vector3 targetPos)
     {
-        isMoving = true;
+        isMoving = true; anim.SetBool("isKick", true);
         float elapsed = 0f;
         float duration = moveSmoothTime;
         Vector3 start = box.transform.position;
@@ -148,6 +150,7 @@ public class Character : MonoBehaviour
 
         box.transform.position = targetPos;
         yield return new WaitForSeconds(0.3f);
+        anim.SetBool("isKick", false);
     }
 
     private Vector2 GetInputDirection()
