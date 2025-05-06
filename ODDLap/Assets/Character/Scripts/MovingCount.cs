@@ -26,10 +26,11 @@ public class MovingCount : MonoBehaviour
 
     public void SetText()
     {
-        text.text = remainCount.ToString();
-        if (remainCount <= 0)
+        if (remainCount == 0)
         {
             //die
+            Debug.Log("이동횟수 부족");
         }
+        text.text = remainCount.ToString();
     }
 }
