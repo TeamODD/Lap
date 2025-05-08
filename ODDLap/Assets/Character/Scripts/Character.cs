@@ -4,9 +4,6 @@ using System.Collections.Generic;
 
 public class Character : MonoBehaviour
 {
-    public MovingCount movingCount; // 행위를 할 시 카운트 감소
-    public Escape escape;
-    public RestartScene restartScene; // 씬 재시작
 
     [SerializeField] private float moveSmoothTime = 0.05f; // 한 칸당 움직이는 시간(대략적)
     [SerializeField] private float gridSize = 1f; // 그리드 사이즈
@@ -16,12 +13,16 @@ public class Character : MonoBehaviour
 
     private Queue<Vector2> inputQueue = new Queue<Vector2>(); // 움직임을 담는 큐
 
+    private MovingCount movingCount; // 행위를 할 시 카운트 감소
+    private Escape escape;
+    private RestartScene restartScene; // 씬 재시작
+
     private Animator anim;
     private SpriteRenderer spriteRenderer;
 
-    public LayerMask obstacleLayer; // 벽이나 못 가는 장애물
-    public LayerMask boxLayer; // 상자
-    public LayerMask exitDoorLayer; // 탈출문 레이어
+    private LayerMask obstacleLayer; // 벽이나 못 가는 장애물
+    private LayerMask boxLayer; // 상자
+    private LayerMask exitDoorLayer; // 탈출문 레이어
 
     [SerializeField] private float checkRadius = 0.1f;
 
@@ -29,6 +30,14 @@ public class Character : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+
+        movingCount = FindAnyObjectByType<MovingCount>();
+        escape = FindAnyObjectByType<Escape>();
+        restartScene = FindAnyObjectByType<RestartScene>();
+
+        obstacleLayer = LayerMask.GetMask("Obstacles");
+        boxLayer = LayerMask.GetMask("Boxes");
+        exitDoorLayer = LayerMask.GetMask("EXIT");
     }
 
     void Update()
@@ -56,9 +65,11 @@ public class Character : MonoBehaviour
             Vector3 targetPos = transform.position + (Vector3)(nextDir * gridSize);
 
             Collider2D obstacle = Physics2D.OverlapCircle(targetPos, checkRadius, obstacleLayer);
+
             if (obstacle != null)
             {
                 Debug.Log("벽");
+                TryMoveNext();
                 return;
             }
 
@@ -75,6 +86,7 @@ public class Character : MonoBehaviour
                 else
                 {
                     Debug.Log("열쇠 없음");
+                    TryMoveNext();
                     return;
                 }
             }
@@ -85,7 +97,7 @@ public class Character : MonoBehaviour
             {
                 // 상자 앞으로 장애물 있는지 확인
                 Vector3 boxNextPos = hit.collider.transform.position + (Vector3)(nextDir * gridSize);
-                obstacle = Physics2D.OverlapCircle(boxNextPos, checkRadius, boxLayer | obstacleLayer);
+                            obstacle = Physics2D.OverlapCircle(boxNextPos, checkRadius, boxLayer | obstacleLayer);
                 Collider2D obstacle2 = Physics2D.OverlapCircle(boxNextPos, checkRadius, boxLayer | exitDoorLayer);
 
                 if (obstacle == null && obstacle2 == null)
@@ -96,7 +108,8 @@ public class Character : MonoBehaviour
                 {
                     // 발차기 모션 후 카운트 감소
                     Debug.Log("상자 뒤에 벽");
-                    movingCount.MoveCounting();;
+                    movingCount.MoveCounting(); ;
+                    TryMoveNext();
                     return;
                 }
             }
