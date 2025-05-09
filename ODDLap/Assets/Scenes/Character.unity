@@ -1670,21 +1670,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba9ccd7e352ea374d805187565d6267d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movingCount: {fileID: 1115292285}
-  escape: {fileID: 1115292288}
-  restartScene: {fileID: 1115292287}
-  moveSmoothTime: 0.05
+  moveDuration: 0.1
   gridSize: 1
-  obstacleLayer:
-    serializedVersion: 2
-    m_Bits: 64
-  boxLayer:
-    serializedVersion: 2
-    m_Bits: 8
-  exitDoorLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  checkRadius: 0.1
 --- !u!212 &2127353926
 SpriteRenderer:
   m_ObjectHideFlags: 0

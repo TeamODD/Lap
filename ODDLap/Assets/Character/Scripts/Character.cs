@@ -5,8 +5,9 @@ using System.Collections.Generic;
 public class Character : MonoBehaviour
 {
 
-    [SerializeField] private float moveSmoothTime = 0.05f; // 한 칸당 움직이는 시간(대략적)
+    [SerializeField] private float moveDuration = 0.1f; // 한 칸당 움직이는 시간
     [SerializeField] private float gridSize = 1f; // 그리드 사이즈
+    private float checkRadius = 0.1f;
 
     private bool isMoving = false;
     private Vector3 velocity = Vector3.zero;
@@ -23,8 +24,6 @@ public class Character : MonoBehaviour
     private LayerMask obstacleLayer; // 벽이나 못 가는 장애물
     private LayerMask boxLayer; // 상자
     private LayerMask exitDoorLayer; // 탈출문 레이어
-
-    [SerializeField] private float checkRadius = 0.1f;
 
     void Awake()
     {
@@ -64,22 +63,22 @@ public class Character : MonoBehaviour
 
             Vector3 targetPos = transform.position + (Vector3)(nextDir * gridSize);
 
-            Collider2D obstacle = Physics2D.OverlapCircle(targetPos, checkRadius, obstacleLayer);
+            Collider2D checkWall = Physics2D.OverlapCircle(targetPos, checkRadius, obstacleLayer);
 
-            if (obstacle != null)
+            if (checkWall != null)
             {
                 Debug.Log("벽");
                 TryMoveNext();
                 return;
             }
 
-            Collider2D door = Physics2D.OverlapCircle(targetPos, checkRadius, exitDoorLayer);
-            if (door != null)
+            Collider2D checkDoor = Physics2D.OverlapCircle(targetPos, checkRadius, exitDoorLayer);
+            if (checkDoor != null)
             {
                 if (escape.HasKey())
                 {
                     Debug.Log("탈출");
-                    door.gameObject.SetActive(false); // 탈출구 비활성화
+                    checkDoor.gameObject.SetActive(false); // 탈출구 비활성화
                     StartCoroutine(MoveToPosition(targetPos));
                     return;
                 }
@@ -91,24 +90,23 @@ public class Character : MonoBehaviour
                 }
             }
 
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, nextDir, gridSize, boxLayer);
+            Collider2D checkBox = Physics2D.OverlapCircle(targetPos, checkRadius, boxLayer);
             
-            if (hit.collider != null)
+            if (checkBox != null)
             {
                 // 상자 앞으로 장애물 있는지 확인
-                Vector3 boxNextPos = hit.collider.transform.position + (Vector3)(nextDir * gridSize);
-                            obstacle = Physics2D.OverlapCircle(boxNextPos, checkRadius, boxLayer | obstacleLayer);
-                Collider2D obstacle2 = Physics2D.OverlapCircle(boxNextPos, checkRadius, boxLayer | exitDoorLayer);
+                Vector3 boxNextPos = targetPos + (Vector3)(nextDir * gridSize);
+                Collider2D obstacle = Physics2D.OverlapCircle(boxNextPos, checkRadius, boxLayer | obstacleLayer | exitDoorLayer);
 
-                if (obstacle == null && obstacle2 == null)
+                if (obstacle == null)
                 {
-                    StartCoroutine(MoveBoxThenPlayer(hit.collider.gameObject, boxNextPos, targetPos));
+                    StartCoroutine(MoveBoxThenPlayer(checkBox.gameObject, boxNextPos, targetPos));
                 }
                 else
                 {
                     // 발차기 모션 후 카운트 감소
                     Debug.Log("상자 뒤에 벽");
-                    movingCount.MoveCounting(); ;
+                    movingCount.MoveCounting();
                     TryMoveNext();
                     return;
                 }
@@ -125,38 +123,16 @@ public class Character : MonoBehaviour
         yield return StartCoroutine(MoveBox(box, boxTarget));      // 상자 먼저 이동
         yield return StartCoroutine(MoveToPosition(playerTarget)); // 그다음 플레이어 이동
     }
-
-    private IEnumerator MoveToPosition(Vector3 target)
-    {
-        isMoving = true; anim.SetBool("isMove", true);
-
-        while ((target - transform.position).sqrMagnitude > 0.001f)
-        {
-            transform.position = Vector3.SmoothDamp(transform.position, target, ref velocity, moveSmoothTime);
-            yield return null;
-        }
-
-        transform.position = target;
-        velocity = Vector3.zero;
-        anim.SetBool("isMove", false); // 임시로 보기 좋게 위로 올림
-        yield return new WaitForSeconds(0.2f); // 헬 테이커처럼 움직임 간 약간의 텀
-
-        isMoving = false;
-        movingCount.MoveCounting(); // 움직임 모션 이후 카운트 1 감소
-
-        TryMoveNext();
-    }
-
     private IEnumerator MoveBox(GameObject box, Vector3 targetPos)
     {
         isMoving = true; anim.SetBool("isKick", true);
+
         float elapsed = 0f;
-        float duration = moveSmoothTime;
         Vector3 start = box.transform.position;
 
-        while (elapsed < duration)
+        while (elapsed < moveDuration)
         {
-            box.transform.position = Vector3.Lerp(start, targetPos, elapsed / duration);
+            box.transform.position = Vector3.Lerp(start, targetPos, elapsed / moveDuration);
             elapsed += Time.deltaTime;
             yield return null;
         }
@@ -164,6 +140,28 @@ public class Character : MonoBehaviour
         box.transform.position = targetPos;
         yield return new WaitForSeconds(0.3f);
         anim.SetBool("isKick", false);
+    }
+
+    private IEnumerator MoveToPosition(Vector3 target)
+    {
+        isMoving = true;
+        anim.SetTrigger("Move");
+
+        float elapsed = 0f;
+        Vector3 start = transform.position;
+
+        while (elapsed < moveDuration)
+        {
+            transform.position = Vector3.Lerp(start, target, elapsed / moveDuration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }transform.position = target;
+
+        isMoving = false;
+        movingCount.MoveCounting(); // 움직임 모션 이후 카운트 1 감소
+        /*실제 이동 딜레이를 주는 대신, 애니메이션이 약간 늦게 끝나는 식으로 처리:
+        Animator에서 Move 애니메이션에 약간의 "Exit Time"을 주거나 Move 애니메이션이 끝나는 지점에 “카메라 흔들기”, “효과음” 등을 배치*/
+        TryMoveNext();
     }
 
     private Vector2 GetInputDirection()
