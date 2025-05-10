@@ -27,8 +27,8 @@ public class Character : MonoBehaviour
 
     void Awake()
     {
-        anim = GetComponent<Animator>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        anim = GetComponentInChildren<Animator>();
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
         movingCount = FindAnyObjectByType<MovingCount>();
         escape = FindAnyObjectByType<Escape>();
