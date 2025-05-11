@@ -120,12 +120,15 @@ public class Character : MonoBehaviour
     }
     private IEnumerator MoveBoxThenPlayer(GameObject box, Vector3 boxTarget, Vector3 playerTarget)
     {
+        anim.SetTrigger("Push");
+        yield return new WaitForSeconds(0.3f);
         yield return StartCoroutine(MoveBox(box, boxTarget));      // 상자 먼저 이동
         yield return StartCoroutine(MoveToPosition(playerTarget)); // 그다음 플레이어 이동
     }
+
     private IEnumerator MoveBox(GameObject box, Vector3 targetPos)
     {
-        isMoving = true; anim.SetBool("isKick", true);
+        isMoving = true; 
 
         float elapsed = 0f;
         Vector3 start = box.transform.position;
@@ -139,7 +142,7 @@ public class Character : MonoBehaviour
 
         box.transform.position = targetPos;
         yield return new WaitForSeconds(0.3f);
-        anim.SetBool("isKick", false);
+        isMoving = false;
     }
 
     private IEnumerator MoveToPosition(Vector3 target)
@@ -157,13 +160,12 @@ public class Character : MonoBehaviour
             yield return null;
         }transform.position = target;
 
+        yield return new WaitForSeconds(0.15f); //딜레이
+
         isMoving = false;
         movingCount.MoveCounting(); // 움직임 모션 이후 카운트 1 감소
-        /*실제 이동 딜레이를 주는 대신, 애니메이션이 약간 늦게 끝나는 식으로 처리:
-        Animator에서 Move 애니메이션에 약간의 "Exit Time"을 주거나 Move 애니메이션이 끝나는 지점에 “카메라 흔들기”, “효과음” 등을 배치*/
         TryMoveNext();
     }
-
     private Vector2 GetInputDirection()
     {
         if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A)) return Vector2.left;
