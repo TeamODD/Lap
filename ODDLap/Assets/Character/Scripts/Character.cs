@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class Character : MonoBehaviour
 {
+    private Coroutine idleDelayCoroutine;
 
     [SerializeField] private float moveDuration = 0.1f; // 한 칸당 움직이는 시간
     [SerializeField] private float gridSize = 1f; // 그리드 사이즈
@@ -48,6 +49,7 @@ public class Character : MonoBehaviour
             inputQueue.Enqueue(inputDir);
             TryMoveNext();
         }
+
     }
 
     private void TryMoveNext()
@@ -63,8 +65,8 @@ public class Character : MonoBehaviour
 
             Vector3 targetPos = transform.position + (Vector3)(nextDir * gridSize);
 
+            // 벽 체크
             Collider2D checkWall = Physics2D.OverlapCircle(targetPos, checkRadius, obstacleLayer);
-
             if (checkWall != null)
             {
                 Debug.Log("벽");
@@ -72,6 +74,7 @@ public class Character : MonoBehaviour
                 return;
             }
 
+            // 탈출문 체크
             Collider2D checkDoor = Physics2D.OverlapCircle(targetPos, checkRadius, exitDoorLayer);
             if (checkDoor != null)
             {
@@ -90,8 +93,8 @@ public class Character : MonoBehaviour
                 }
             }
 
+            // 박스 체크
             Collider2D checkBox = Physics2D.OverlapCircle(targetPos, checkRadius, boxLayer);
-            
             if (checkBox != null)
             {
                 // 상자 앞으로 장애물 있는지 확인
@@ -104,13 +107,13 @@ public class Character : MonoBehaviour
                 }
                 else
                 {
-                    // 발차기 모션 후 카운트 감소
+                    StartCoroutine(CantMoveBox());
                     Debug.Log("상자 뒤에 벽");
                     movingCount.MoveCounting();
-                    TryMoveNext();
                     return;
                 }
             }
+
             else
             {
                 // 그냥 이동
@@ -118,18 +121,26 @@ public class Character : MonoBehaviour
             }
         }
     }
+    private IEnumerator CantMoveBox()
+    {
+        isMoving = true;
+        anim.SetTrigger("Push");
+        yield return new WaitForSeconds(0.5f);
+        isMoving = false;
+        TryMoveNext();
+    }
+
     private IEnumerator MoveBoxThenPlayer(GameObject box, Vector3 boxTarget, Vector3 playerTarget)
     {
+        isMoving = true;
         anim.SetTrigger("Push");
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.5f);
         yield return StartCoroutine(MoveBox(box, boxTarget));      // 상자 먼저 이동
         yield return StartCoroutine(MoveToPosition(playerTarget)); // 그다음 플레이어 이동
     }
 
     private IEnumerator MoveBox(GameObject box, Vector3 targetPos)
     {
-        isMoving = true; 
-
         float elapsed = 0f;
         Vector3 start = box.transform.position;
 
@@ -141,8 +152,6 @@ public class Character : MonoBehaviour
         }
 
         box.transform.position = targetPos;
-        yield return new WaitForSeconds(0.3f);
-        isMoving = false;
     }
 
     private IEnumerator MoveToPosition(Vector3 target)
@@ -166,6 +175,7 @@ public class Character : MonoBehaviour
         movingCount.MoveCounting(); // 움직임 모션 이후 카운트 1 감소
         TryMoveNext();
     }
+
     private Vector2 GetInputDirection()
     {
         if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A)) return Vector2.left;
