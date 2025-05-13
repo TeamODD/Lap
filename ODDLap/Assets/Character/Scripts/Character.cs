@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using static UnityEngine.GraphicsBuffer;
 
 public class Character : MonoBehaviour
 {
@@ -134,24 +135,31 @@ public class Character : MonoBehaviour
     {
         isMoving = true;
         anim.SetTrigger("Push");
-        yield return new WaitForSeconds(0.5f);
-        yield return StartCoroutine(MoveBox(box, boxTarget));      // 상자 먼저 이동
-        yield return StartCoroutine(MoveToPosition(playerTarget)); // 그다음 플레이어 이동
+        yield return new WaitForSeconds(0.3f);
+        yield return StartCoroutine(MoveBox(box, playerTarget, boxTarget));
     }
 
-    private IEnumerator MoveBox(GameObject box, Vector3 targetPos)
+    private IEnumerator MoveBox(GameObject box, Vector3 playerTarget, Vector3 targetPos)
     {
         float elapsed = 0f;
         Vector3 start = box.transform.position;
+        Vector3 start2 = transform.position;
 
         while (elapsed < moveDuration)
         {
             box.transform.position = Vector3.Lerp(start, targetPos, elapsed / moveDuration);
+            transform.position = Vector3.Lerp(start2, playerTarget, elapsed / moveDuration);
             elapsed += Time.deltaTime;
             yield return null;
         }
-
         box.transform.position = targetPos;
+        transform.position = playerTarget;
+
+        yield return new WaitForSeconds(0.15f); //딜레이
+
+        isMoving = false;
+        movingCount.MoveCounting(); // 움직임 모션 이후 카운트 1 감소
+        TryMoveNext();
     }
 
     private IEnumerator MoveToPosition(Vector3 target)
