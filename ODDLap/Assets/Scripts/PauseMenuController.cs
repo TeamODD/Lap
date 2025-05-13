@@ -29,7 +29,7 @@ public class PauseMenuController : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(firstSelectedButton);
     }
 
-    void ResumeGame()
+    public void ResumeGame()
     {
         settingsPanel.SetActive(false);
         Time.timeScale = 1;
