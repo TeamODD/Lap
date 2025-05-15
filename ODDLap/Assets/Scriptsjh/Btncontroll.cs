@@ -13,4 +13,10 @@ public class Btncontroll : MonoBehaviour
 
 
     }
+    public void backUI()
+    {
+        PreUI.SetActive(false);
+        Time.timeScale = 1;
+
+    }
 }
