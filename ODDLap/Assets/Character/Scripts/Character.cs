@@ -21,16 +21,20 @@ public class Character : MonoBehaviour
     private RestartScene restartScene; // 씬 재시작
 
     private Animator anim;
+    private Animator animForTrap;
     private SpriteRenderer spriteRenderer;
 
     private LayerMask obstacleLayer; // 벽이나 못 가는 장애물
     private LayerMask boxLayer; // 상자
     private LayerMask exitDoorLayer; // 탈출문 레이어
+    private LayerMask keyLayer; // 탈출문 레이어
 
+    private bool next = false;
     void Awake()
     {
         anim = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        animForTrap = GameObject.Find("trap").GetComponent<Animator>();
 
         movingCount = FindAnyObjectByType<MovingCount>();
         escape = FindAnyObjectByType<Escape>();
@@ -39,6 +43,7 @@ public class Character : MonoBehaviour
         obstacleLayer = LayerMask.GetMask("Obstacles");
         boxLayer = LayerMask.GetMask("Boxes");
         exitDoorLayer = LayerMask.GetMask("EXIT");
+        keyLayer = LayerMask.GetMask("key");
     }
 
     void Update()
@@ -100,7 +105,7 @@ public class Character : MonoBehaviour
             {
                 // 상자 앞으로 장애물 있는지 확인
                 Vector3 boxNextPos = targetPos + (Vector3)(nextDir * gridSize);
-                Collider2D obstacle = Physics2D.OverlapCircle(boxNextPos, checkRadius, boxLayer | obstacleLayer | exitDoorLayer);
+                Collider2D obstacle = Physics2D.OverlapCircle(boxNextPos, checkRadius, boxLayer | obstacleLayer | exitDoorLayer | keyLayer);
 
                 if (obstacle == null)
                 {
@@ -124,8 +129,11 @@ public class Character : MonoBehaviour
     }
     private IEnumerator CantMoveBox()
     {
+        if (next == false) next = true;
+        else next = false;
         isMoving = true;
         anim.SetTrigger("Push");
+        animForTrap.SetBool("isOn", next);
         yield return new WaitForSeconds(0.5f);
         isMoving = false;
         TryMoveNext();
@@ -141,6 +149,9 @@ public class Character : MonoBehaviour
 
     private IEnumerator MoveBox(GameObject box, Vector3 playerTarget, Vector3 targetPos)
     {
+        if (next == false) next = true;
+        else next = false;
+        animForTrap.SetBool("isOn", next);
         float elapsed = 0f;
         Vector3 start = box.transform.position;
         Vector3 start2 = transform.position;
@@ -164,8 +175,12 @@ public class Character : MonoBehaviour
 
     private IEnumerator MoveToPosition(Vector3 target)
     {
+        if (next == false) next = true;
+        else next = false;
+
         isMoving = true;
         anim.SetTrigger("Move");
+        animForTrap.SetBool("isOn", next);
 
         float elapsed = 0f;
         Vector3 start = transform.position;
@@ -205,8 +220,10 @@ public class Character : MonoBehaviour
     {
         if (other.CompareTag("Trap"))
         {
-            Debug.Log("가시닿음 " + ++countForDebug);
-            movingCount.MoveCounting(); // 닿을 시 바로 감소
+            if(next == true)
+            {
+                movingCount.MoveCounting(); // 닿을 시 바로 감소
+            }
         }
         if (other.CompareTag("Key"))
         {
