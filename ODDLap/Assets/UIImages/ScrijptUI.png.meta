@@ -384,7 +384,18 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      ScrijptUI_0: 4086212952433666635
+      ScrijptUI_1: -2069816506175260699
+      ScrijptUI_10: 9212640510247094065
+      ScrijptUI_2: -9049034323342041809
+      ScrijptUI_3: 5569978838812162146
+      ScrijptUI_4: 1116033018896328576
+      ScrijptUI_5: 6352497908368862537
+      ScrijptUI_6: 4194650139669992645
+      ScrijptUI_7: -2766129464097509942
+      ScrijptUI_8: -4974833511888830789
+      ScrijptUI_9: -7492354561863256738
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
