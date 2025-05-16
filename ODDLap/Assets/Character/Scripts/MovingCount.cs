@@ -75,6 +75,7 @@ public class MovingCount : MonoBehaviour
     }
     private IEnumerator ResetInvert()
     {
+        targetScript.inputQueue.Clear();
         targetScript.enabled = false;
         audioSource.PlayOneShot(die);
         DeathPanel.gameObject.SetActive(true);
@@ -89,6 +90,7 @@ public class MovingCount : MonoBehaviour
     }
     private IEnumerator ClearCoroutine()
     {
+        targetScript.inputQueue.Clear();
         targetScript.enabled = false;
         audioSource.PlayOneShot(clr);
         yield return new WaitForSeconds(2f); // 1초 동안 색상 반전b

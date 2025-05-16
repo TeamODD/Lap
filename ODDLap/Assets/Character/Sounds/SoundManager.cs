@@ -19,7 +19,7 @@ public class SoundManager : MonoBehaviour
             DontDestroyOnLoad(gameObject); // 씬 전환 시 파괴 방지
         }
     }
-
+    
     public void PlayMusic(AudioClip clip)
     {
         if (musicAudioSource == null)
