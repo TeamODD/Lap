@@ -20,6 +20,7 @@ public class PauseMenuController : MonoBehaviour
 
     void PauseGame()
     {
+        Debug.Log("게임은 현재 일시정지 상태입니다.");
         settingsPanel.SetActive(true);
         Time.timeScale = 0;
         isPaused = true;
