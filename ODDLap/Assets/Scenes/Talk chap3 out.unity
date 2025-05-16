@@ -576,7 +576,7 @@ MonoBehaviour:
   typingSpeed: 0.05
   fadeOutImage: {fileID: 0}
   fadeDuration: 1.5
-  nextSceneName: 
+  nextSceneName: Outro
 --- !u!1 &526221687
 GameObject:
   m_ObjectHideFlags: 0

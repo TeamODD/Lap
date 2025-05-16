@@ -241,16 +241,22 @@ MonoBehaviour:
   dialogueLines:
   - text: asdfasdf
     isLeftSpeaker: 1
+    offObjects: []
+    leftImageObject: {fileID: 0}
+    rightImageObject: {fileID: 0}
   - text: fasdfdsaf
     isLeftSpeaker: 0
+    offObjects: []
+    leftImageObject: {fileID: 0}
+    rightImageObject: {fileID: 0}
   leftText: {fileID: 1164715299}
   rightText: {fileID: 2129846974}
-  leftCharacterImage: {fileID: 875371280}
-  rightCharacterImage: {fileID: 1629336800}
+  defaultLeftImage: {fileID: 0}
+  defaultRightImage: {fileID: 0}
   fadeImage: {fileID: 2110818363}
   fadeDuration: 0.8
   typingSpeed: 0.05
-  nextSceneName: Talk chap2 in
+  nextSceneName: BackGround2
 --- !u!1 &526221687
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Xml.Schema;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MovingCount : MonoBehaviour
@@ -14,9 +15,11 @@ public class MovingCount : MonoBehaviour
 
     private AudioSource audioSource;
     public AudioClip die;
+    public AudioClip clr;
 
     public bool clear = false;
-
+    public string sceneToLoad;
+    public Character targetScript;
     void Awake()
     {
         clear = false;
@@ -57,6 +60,7 @@ public class MovingCount : MonoBehaviour
             }
             else
             {
+                StartCoroutine(ClearCoroutine());
                 //클리어시 다음씬 클리어 노래
             }
         }
@@ -76,5 +80,14 @@ public class MovingCount : MonoBehaviour
         character.inputQueue.Clear();
         initCount();
         restartScene.Restart();
+    }
+    private IEnumerator ClearCoroutine()
+    {
+        targetScript.enabled = false;
+        audioSource.PlayOneShot(clr);
+        yield return new WaitForSeconds(2f); // 1초 동안 색상 반전b
+        targetScript.enabled = true;
+        SceneManager.LoadScene(sceneToLoad);
+        //반전 종료
     }
 }

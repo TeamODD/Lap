@@ -5120,6 +5120,10 @@ PrefabInstance:
       value: GameController
       objectReference: {fileID: 0}
     - target: {fileID: 4839901282641728606, guid: f9e690b3b7ba70748bc819f41ded6df6, type: 3}
+      propertyPath: clr
+      value: 
+      objectReference: {fileID: 8300000, guid: 96c82ee20798d894ba424a1e1aa9ebb3, type: 3}
+    - target: {fileID: 4839901282641728606, guid: f9e690b3b7ba70748bc819f41ded6df6, type: 3}
       propertyPath: die
       value: 
       objectReference: {fileID: 8300000, guid: cdb03e3b64e569d4d86b00e8f7adcecb, type: 3}
@@ -5131,6 +5135,14 @@ PrefabInstance:
       propertyPath: totalCount
       value: 14
       objectReference: {fileID: 0}
+    - target: {fileID: 4839901282641728606, guid: f9e690b3b7ba70748bc819f41ded6df6, type: 3}
+      propertyPath: sceneToLoad
+      value: Talk chap1 out
+      objectReference: {fileID: 0}
+    - target: {fileID: 4839901282641728606, guid: f9e690b3b7ba70748bc819f41ded6df6, type: 3}
+      propertyPath: targetScript
+      value: 
+      objectReference: {fileID: 1024095026}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

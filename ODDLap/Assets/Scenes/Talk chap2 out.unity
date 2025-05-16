@@ -241,42 +241,84 @@ MonoBehaviour:
   dialogueLines:
   - text: "\uC800\uAE30..."
     isLeftSpeaker: 0
+    offObjects: []
+    leftImageObject: {fileID: 0}
+    rightImageObject: {fileID: 0}
   - text: "\uD639\uC2DC \uBA85\uC791\uC9C4\uC9DC\uAC08\uBE44 \uC804\uB2E8\uC9C0 \uBCF4\uC168\uB098\uC694?"
     isLeftSpeaker: 0
+    offObjects: []
+    leftImageObject: {fileID: 0}
+    rightImageObject: {fileID: 0}
   - text: "\uD55C \uC7A5\uB9CC \uB354 \uC788\uC73C\uBA74 \uCEEC\uB81B\uC158 \uC644\uC131\uC778\uB370...\n\uD751..."
     isLeftSpeaker: 0
+    offObjects: []
+    leftImageObject: {fileID: 0}
+    rightImageObject: {fileID: 0}
   - text: "\uC804\uB2E8\uC9C0\uC694?!"
     isLeftSpeaker: 1
+    offObjects: []
+    leftImageObject: {fileID: 0}
+    rightImageObject: {fileID: 0}
   - text: "\uADF8\uAC78 \uBAA8\uC73C\uC138\uC694?"
     isLeftSpeaker: 1
+    offObjects: []
+    leftImageObject: {fileID: 0}
+    rightImageObject: {fileID: 0}
   - text: "\uC790\uB124, \uC774\uAC78 \uB9D0\uD558\uB294 \uAC74\uAC00?"
     isLeftSpeaker: 0
+    offObjects: []
+    leftImageObject: {fileID: 0}
+    rightImageObject: {fileID: 0}
   - text: "\uC544\uC544! \uC774\uAC78\uB85C..."
     isLeftSpeaker: 0
+    offObjects: []
+    leftImageObject: {fileID: 0}
+    rightImageObject: {fileID: 0}
   - text: "\uB4DC\uB514\uC5B4 \uC804\uB2E8\uC9C0 \uCEEC\uB809\uC158 \uC644\uC131\uC774\uB2E4!"
     isLeftSpeaker: 0
+    offObjects: []
+    leftImageObject: {fileID: 0}
+    rightImageObject: {fileID: 0}
   - text: "\uC774 \uAE30\uC068, \uB204\uAD6C\uBCF4\uB2E4 \uB2F9\uC2E0\uC774 \uC54C\uC796\uC544\uC694?"
     isLeftSpeaker: 0
+    offObjects: []
+    leftImageObject: {fileID: 0}
+    rightImageObject: {fileID: 0}
   - text: ...
     isLeftSpeaker: 1
+    offObjects: []
+    leftImageObject: {fileID: 0}
+    rightImageObject: {fileID: 0}
   - text: "\uC78A\uACE0 \uC788\uC5C8\uC5B4\uC694 \uADF8\uB7F0 \uAC70"
     isLeftSpeaker: 1
+    offObjects: []
+    leftImageObject: {fileID: 0}
+    rightImageObject: {fileID: 0}
   - text: "\uADF8\uB0E5 \uBC14\uBCF4 \uAC19\uC740 \uCDE8\uBBF8\uC778 \uC904\uB9CC
       \uC54C\uC558\uB294\uB370"
     isLeftSpeaker: 1
+    offObjects: []
+    leftImageObject: {fileID: 0}
+    rightImageObject: {fileID: 0}
   - text: "\uADF8 \uBC14\uBCF4 \uAC19\uC740 \uAC78 \uC9C4\uC2EC\uC73C\uB85C \uC88B\uC544\uD588\uB358
       \uC0AC\uB78C"
     isLeftSpeaker: 0
+    offObjects: []
+    leftImageObject: {fileID: 0}
+    rightImageObject: {fileID: 0}
   - text: "\uADF8\uAC8C \uB2F9\uC2E0\uC774\uC5C8\uC5B4\uC694"
     isLeftSpeaker: 0
+    offObjects: []
+    leftImageObject: {fileID: 0}
+    rightImageObject: {fileID: 0}
   leftText: {fileID: 1164715299}
   rightText: {fileID: 2129846974}
-  leftCharacterImage: {fileID: 875371280}
-  rightCharacterImage: {fileID: 1629336800}
+  defaultLeftImage: {fileID: 0}
+  defaultRightImage: {fileID: 0}
   fadeImage: {fileID: 2110818363}
   fadeDuration: 0.8
   typingSpeed: 0.05
-  nextSceneName: GameScene
+  nextSceneName: BackGround3
 --- !u!1 &526221687
 GameObject:
   m_ObjectHideFlags: 0
