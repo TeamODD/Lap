@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Intro.unity
     guid: 102da49ff66c2a449bbcd1b055383f78
   - enabled: 1
+    path: Assets/Scenes/beforeFirstStage.unity
+    guid: efe3bc1a134810a4093cf9f85cf6b878
+  - enabled: 1
     path: Assets/Scenes/BackGround1.unity
     guid: e598f5c59f1b40843810bfbdfad5175b
   - enabled: 1

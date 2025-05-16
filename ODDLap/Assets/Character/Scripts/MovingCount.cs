@@ -20,6 +20,7 @@ public class MovingCount : MonoBehaviour
     public bool clear = false;
     public string sceneToLoad;
     public Character targetScript;
+    public GameObject DeathPanel;
     void Awake()
     {
         clear = false;
@@ -76,9 +77,12 @@ public class MovingCount : MonoBehaviour
     {
         targetScript.enabled = false;
         audioSource.PlayOneShot(die);
+        DeathPanel.gameObject.SetActive(true);
+
         yield return new WaitForSeconds(2f); // 1초 동안 색상 반전
-        //반전 종료
+                                             //반전 종료
         targetScript.enabled = true;
+        DeathPanel.gameObject.SetActive(false);
         character.inputQueue.Clear();
         initCount();
         restartScene.Restart();
