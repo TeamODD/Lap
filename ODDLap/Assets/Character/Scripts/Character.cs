@@ -14,7 +14,7 @@ public class Character : MonoBehaviour
     private bool isMoving = false;
     private Vector3 velocity = Vector3.zero;
 
-    private Queue<Vector2> inputQueue = new Queue<Vector2>(); // 움직임을 담는 큐
+    public Queue<Vector2> inputQueue = new Queue<Vector2>(); // 움직임을 담는 큐
 
     private MovingCount movingCount; // 행위를 할 시 카운트 감소
     private Escape escape;
@@ -29,6 +29,13 @@ public class Character : MonoBehaviour
     private LayerMask exitDoorLayer; // 탈출문 레이어
     private LayerMask keyLayer; // 탈출문 레이어
 
+    private AudioSource audioSource;
+
+    public AudioClip cantMoveBox;
+    public AudioClip moveBox;
+    public AudioClip walkSound;
+    public AudioClip getKeySound;
+    public AudioClip clearSound;
     private bool next = false;
     void Awake()
     {
@@ -44,6 +51,9 @@ public class Character : MonoBehaviour
         boxLayer = LayerMask.GetMask("Boxes");
         exitDoorLayer = LayerMask.GetMask("EXIT");
         keyLayer = LayerMask.GetMask("key");
+
+
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -129,6 +139,7 @@ public class Character : MonoBehaviour
     }
     private IEnumerator CantMoveBox()
     {
+        audioSource.PlayOneShot(cantMoveBox);
         if (next == false) next = true;
         else next = false;
         isMoving = true;
@@ -149,6 +160,7 @@ public class Character : MonoBehaviour
 
     private IEnumerator MoveBox(GameObject box, Vector3 playerTarget, Vector3 targetPos)
     {
+        audioSource.PlayOneShot(moveBox);
         if (next == false) next = true;
         else next = false;
         animForTrap.SetBool("isOn", next);
@@ -175,6 +187,7 @@ public class Character : MonoBehaviour
 
     private IEnumerator MoveToPosition(Vector3 target)
     {
+        audioSource.PlayOneShot(walkSound);
         if (next == false) next = true;
         else next = false;
 
@@ -215,7 +228,6 @@ public class Character : MonoBehaviour
         return Vector2.zero;
     }
 
-    private int countForDebug = 0; // 가시용
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Trap"))
@@ -228,8 +240,15 @@ public class Character : MonoBehaviour
         if (other.CompareTag("Key"))
         {
             Debug.Log("키획득");
+            audioSource.PlayOneShot(getKeySound);
             escape.GetKey();
             other.gameObject.SetActive(false);
+        }
+        if (other.CompareTag("clear"))
+        {
+            audioSource.PlayOneShot(clearSound);
+            movingCount.isClear();
+            Debug.Log("클리어");//씬 넘기기
         }
     }
 }

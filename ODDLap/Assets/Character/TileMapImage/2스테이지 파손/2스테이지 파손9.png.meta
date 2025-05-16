@@ -61,11 +61,11 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
-  alignment: 0
-  spritePivot: {x: 0.5, y: 0.5}
+  alignment: 9
+  spritePivot: {x: 0.417, y: 0.634}
   spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
@@ -250,7 +250,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -259,7 +259,13 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      "2\uC2A4\uD14C\uC774\uC9C0 \uD30C\uC1909_0": -3320139902297610499
+      "2\uC2A4\uD14C\uC774\uC9C0 \uD30C\uC1909_1": -1027287585384762034
+      "2\uC2A4\uD14C\uC774\uC9C0 \uD30C\uC1909_2": 6859280310853971450
+      "2\uC2A4\uD14C\uC774\uC9C0 \uD30C\uC1909_3": 3175370358575676769
+      "2\uC2A4\uD14C\uC774\uC9C0 \uD30C\uC1909_4": 5275457989676577819
+      "2\uC2A4\uD14C\uC774\uC9C0 \uD30C\uC1909_5": 1443077502932895917
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
