@@ -152,27 +152,8 @@ public class LegacyDialogueManager : MonoBehaviour
     {
         leftText.gameObject.SetActive(isLeftSpeaking);
         rightText.gameObject.SetActive(!isLeftSpeaking);
-
-        int prevIndex = currentIndex - 1;
-        if (prevIndex >= 0 && prevIndex < dialogueLines.Count)
-        {
-            var prevLine = dialogueLines[prevIndex];
-
-            if (prevLine.leftImageObject != null)
-            {
-                var img = prevLine.leftImageObject.GetComponent<Image>();
-                if (img != null)
-                    SetAlpha(img, isLeftSpeaking ? 1f : 0.5f);
-            }
-
-            if (prevLine.rightImageObject != null)
-            {
-                var img = prevLine.rightImageObject.GetComponent<Image>();
-                if (img != null)
-                    SetAlpha(img, isLeftSpeaking ? 0.5f : 1f);
-            }
-        }
     }
+
 
     IEnumerator FadeAndLoadScene()
     {
