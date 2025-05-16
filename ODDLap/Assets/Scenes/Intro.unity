@@ -251,7 +251,7 @@ MonoBehaviour:
   objectsToActivate:
   - {fileID: 731962756}
   - {fileID: 563418925}
-  sceneToLoad: GameScene
+  sceneToLoad: BackGround1
 --- !u!1 &84983683
 GameObject:
   m_ObjectHideFlags: 0
@@ -508,7 +508,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: -3805373509668187378, guid: eba00b39e6ee04de3938787395529f30, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -622,7 +622,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: -767940507859201966, guid: 0d8f9b8f8fcae4fc1b4dda3f735a73b3, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -811,7 +811,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 5708969612128409803, guid: 3ddcda5ed91984f588cebf7eca084830, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
