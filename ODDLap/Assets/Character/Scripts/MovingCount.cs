@@ -74,9 +74,11 @@ public class MovingCount : MonoBehaviour
     }
     private IEnumerator ResetInvert()
     {
+        targetScript.enabled = false;
         audioSource.PlayOneShot(die);
         yield return new WaitForSeconds(2f); // 1초 동안 색상 반전
         //반전 종료
+        targetScript.enabled = true;
         character.inputQueue.Clear();
         initCount();
         restartScene.Restart();
