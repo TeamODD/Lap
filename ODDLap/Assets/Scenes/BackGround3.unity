@@ -2496,6 +2496,13 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5269399729559956105, guid: 218d7a13b84a45642900b4afea73cbaa, type: 3}
+      propertyPath: m_text
+      value: '...
+
+
+        Press ESC'
+      objectReference: {fileID: 0}
     - target: {fileID: 5972099806023287775, guid: 218d7a13b84a45642900b4afea73cbaa, type: 3}
       propertyPath: m_text
       value: "\uC5EC\uAE34... \uC81C \uBC29?"

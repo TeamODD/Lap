@@ -180,7 +180,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 0}
+  m_FirstSelected: {fileID: 1262883681}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
 --- !u!4 &86183874
@@ -1255,7 +1255,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32b56e5f15b8f824f8258e5691e9b013, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firstSelectedButton: {fileID: 1262883681}
+  firstSelectedButton: {fileID: 0}
 --- !u!82 &1124417008
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1365,9 +1365,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68a530f45d2c11d478598752817326f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 1124417008}
-  buttonClickSound: {fileID: 8300000, guid: f317c0c3e20038a489c51b4aab11b330, type: 3}
-  sliderTickSound: {fileID: 8300000, guid: 6a9ed141f14207b47b30f0db0e545e40, type: 3}
+  audioSource: {fileID: 0}
+  buttonClickSound: {fileID: 0}
+  sliderTickSound: {fileID: 0}
   sliderThreshold: 0.05
 --- !u!1 &1262883681
 GameObject:

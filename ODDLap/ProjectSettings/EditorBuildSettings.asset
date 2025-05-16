@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1
+    path: Assets/Scenes/SettingScene.unity
+    guid: 8529173e3ac50dd438bd9e28d3645e06
+  - enabled: 1
     path: Assets/Scenes/Intro.unity
     guid: 102da49ff66c2a449bbcd1b055383f78
   - enabled: 1
@@ -41,7 +44,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Talk chap3 in.unity
     guid: 67509f2fcdf842f4d82bb57b467fb900
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Talk intro.unity
     guid: 09efab2716bd296459506626a768036c
   m_configObjects:

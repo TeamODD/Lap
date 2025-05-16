@@ -7136,6 +7136,13 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5269399729559956105, guid: 218d7a13b84a45642900b4afea73cbaa, type: 3}
+      propertyPath: m_text
+      value: '...
+
+
+        Press ESC'
+      objectReference: {fileID: 0}
     - target: {fileID: 5668043548413276872, guid: 218d7a13b84a45642900b4afea73cbaa, type: 3}
       propertyPath: m_Color.a
       value: 0.16862746
