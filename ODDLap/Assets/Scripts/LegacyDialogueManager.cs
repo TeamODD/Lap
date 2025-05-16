@@ -1,32 +1,47 @@
-using UnityEngine;
+ï»¿using UnityEngine;
+using TMPro;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System.Collections;
+using System.Collections.Generic;
 
 public class LegacyDialogueManager : MonoBehaviour
 {
     [System.Serializable]
     public class DialogueLine
     {
-        public bool isLeftSpeaker;     // true: ¿ÞÂÊ Ä³¸¯ÅÍ, false: ¿À¸¥ÂÊ Ä³¸¯ÅÍ
         [TextArea]
-        public string lineText;
+        public string text;
+        public bool isLeftSpeaker;
+
+        public GameObject[] offObjects;
+
+        public GameObject leftImageObject;
+        public GameObject rightImageObject;
     }
 
-    public Text leftText;
-    public Text rightText;
-    public Image leftCharacterImage;
-    public Image rightCharacterImage;
+    public List<DialogueLine> dialogueLines = new List<DialogueLine>();
 
-    public DialogueLine[] dialogueLines;
+    public TextMeshProUGUI leftText;
+    public TextMeshProUGUI rightText;
+
+    public GameObject defaultLeftImage;
+    public GameObject defaultRightImage;
+
+    public Image fadeImage;
+    public float fadeDuration = 1f;
+
     public float typingSpeed = 0.05f;
+    public string nextSceneName = "NextScene";
 
-    private int index = 0;
+    private int currentIndex = 0;
     private bool isTyping = false;
     private bool skipTyping = false;
+    private bool waitingForSceneChange = false;
 
     void Start()
     {
-        ShowNextLine();
+        StartCoroutine(FadeInThenStartDialogue());
     }
 
     void Update()
@@ -37,6 +52,10 @@ public class LegacyDialogueManager : MonoBehaviour
             {
                 skipTyping = true;
             }
+            else if (waitingForSceneChange)
+            {
+                StartCoroutine(FadeAndLoadScene());
+            }
             else
             {
                 ShowNextLine();
@@ -44,66 +63,133 @@ public class LegacyDialogueManager : MonoBehaviour
         }
     }
 
+    IEnumerator FadeInThenStartDialogue()
+    {
+        if (fadeImage != null)
+        {
+            fadeImage.color = new Color(0, 0, 0, 1);
+            float t = 0;
+            while (t < fadeDuration)
+            {
+                t += Time.deltaTime;
+                float alpha = Mathf.Lerp(1, 0, t / fadeDuration);
+                fadeImage.color = new Color(0, 0, 0, alpha);
+                yield return null;
+            }
+
+            fadeImage.raycastTarget = false;
+        }
+
+        ShowNextLine();
+    }
+
     void ShowNextLine()
     {
-        if (index >= dialogueLines.Length)
+        if (currentIndex >= dialogueLines.Count)
         {
-            leftText.text = "";
-            rightText.text = "";
+            waitingForSceneChange = true;
             return;
         }
 
-        bool isLeft = dialogueLines[index].isLeftSpeaker;
-        string line = dialogueLines[index].lineText;
+        var line = dialogueLines[currentIndex];
 
-        SetSpeakerVisibility(isLeft);
-        StartCoroutine(TypeLine(line, isLeft));
+        // âœ… offObjectsë§Œ ì²˜ë¦¬
+        if (line.offObjects != null)
+        {
+            foreach (var obj in line.offObjects)
+                if (obj != null) obj.SetActive(false);
+        }
 
-        index++;
+        if (defaultLeftImage != null) defaultLeftImage.SetActive(false);
+        if (line.leftImageObject != null) line.leftImageObject.SetActive(true);
+
+        if (defaultRightImage != null) defaultRightImage.SetActive(false);
+        if (line.rightImageObject != null) line.rightImageObject.SetActive(true);
+
+        SetSpeakerVisibility(line.isLeftSpeaker);
+        StartCoroutine(TypeLine(line.text, line.isLeftSpeaker));
+
+        currentIndex++;
     }
 
-    IEnumerator TypeLine(string line, bool isLeft)
+    IEnumerator TypeLine(string text, bool isLeft)
     {
         isTyping = true;
+        skipTyping = false;
 
-        // Clear both
         leftText.text = "";
         rightText.text = "";
 
-        for (int i = 0; i < line.Length; i++)
+        for (int i = 0; i < text.Length; i++)
         {
             if (skipTyping)
             {
-                if (isLeft) leftText.text = line;
-                else rightText.text = line;
+                if (isLeft) leftText.text = text;
+                else rightText.text = text;
                 break;
             }
 
             if (isLeft)
-                leftText.text += line[i];
+                leftText.text += text[i];
             else
-                rightText.text += line[i];
+                rightText.text += text[i];
 
             yield return new WaitForSeconds(typingSpeed);
         }
 
         isTyping = false;
-        skipTyping = false;
-    }
-
-    void SetSpeakerVisibility(bool isLeftSpeaking)
-    {
-        SetAlpha(leftCharacterImage, isLeftSpeaking ? 1f : 0.5f);
-        SetAlpha(rightCharacterImage, isLeftSpeaking ? 0.5f : 1f);
-
-        leftText.gameObject.SetActive(isLeftSpeaking);
-        rightText.gameObject.SetActive(!isLeftSpeaking);
     }
 
     void SetAlpha(Image img, float alpha)
     {
+        if (img == null) return;
         Color c = img.color;
         c.a = alpha;
         img.color = c;
+    }
+
+    void SetSpeakerVisibility(bool isLeftSpeaking)
+    {
+        leftText.gameObject.SetActive(isLeftSpeaking);
+        rightText.gameObject.SetActive(!isLeftSpeaking);
+
+        int prevIndex = currentIndex - 1;
+        if (prevIndex >= 0 && prevIndex < dialogueLines.Count)
+        {
+            var prevLine = dialogueLines[prevIndex];
+
+            if (prevLine.leftImageObject != null)
+            {
+                var img = prevLine.leftImageObject.GetComponent<Image>();
+                if (img != null)
+                    SetAlpha(img, isLeftSpeaking ? 1f : 0.5f);
+            }
+
+            if (prevLine.rightImageObject != null)
+            {
+                var img = prevLine.rightImageObject.GetComponent<Image>();
+                if (img != null)
+                    SetAlpha(img, isLeftSpeaking ? 0.5f : 1f);
+            }
+        }
+    }
+
+    IEnumerator FadeAndLoadScene()
+    {
+        if (fadeImage != null)
+        {
+            fadeImage.raycastTarget = true;
+
+            float t = 0;
+            while (t < fadeDuration)
+            {
+                t += Time.deltaTime;
+                float alpha = Mathf.Lerp(0, 1, t / fadeDuration);
+                fadeImage.color = new Color(0, 0, 0, alpha);
+                yield return null;
+            }
+        }
+
+        SceneManager.LoadScene(nextSceneName);
     }
 }

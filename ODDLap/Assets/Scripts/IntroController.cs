@@ -1,25 +1,26 @@
-using UnityEngine;
-using UnityEngine.UI;
+Ôªøusing UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using TMPro;
 using System.Collections;
 
 public class IntroController : MonoBehaviour
 {
     [Header("Dialogue")]
-    public Text dialogueText;               // ¥ÎªÁ ≈ÿΩ∫∆Æ
-    [TextArea] public string[] dialogueLines; // ¥ÎªÁ ≥ªøÎ πËø≠
-    public float typingSpeed = 0.05f;       // ≈∏¿Ã«Œ º”µµ
+    public TextMeshProUGUI dialogueText;         // ‚úÖ Text ‚Üí TextMeshProUGUI
+    [TextArea] public string[] dialogueLines;
+    public float typingSpeed = 0.05f;
 
     private int dialogueIndex = 0;
     private bool isTyping = false;
     private bool skipTyping = false;
 
     [Header("Objects to Activate")]
-    public GameObject[] objectsToActivate; // ø©∑Ø ∞≥¿« ø¿∫Í¡ß∆Æ∏¶ πËø≠∑Œ º≥¡§
-    private int objectIndex = 0;           // »∞º∫»≠«“ ø¿∫Í¡ß∆Æ¿« ¿Œµ¶Ω∫
+    public GameObject[] objectsToActivate;
+    private int objectIndex = 0;
 
     [Header("Scene to Load")]
-    public string sceneToLoad;             // ¿¸»Ø«“ æ¿¿« ¿Ã∏ß
+    public string sceneToLoad;
 
     void Start()
     {
@@ -29,23 +30,19 @@ public class IntroController : MonoBehaviour
 
     void Update()
     {
-        // Ω∫∆‰¿ÃΩ∫πŸ∏¶ ¥≠∑Øº≠ ¥ÎªÁ ≥—æÓ∞°∞Ì ø¿∫Í¡ß∆Æ »∞º∫»≠
         if (Input.GetKeyDown(KeyCode.Space))
         {
             if (isTyping)
             {
-                // ≈∏¿Ã«Œ¿Ã ≥°≥™¡ˆ æ æ“¥Ÿ∏È Ω∫∆‰¿ÃΩ∫πŸ∑Œ ∞≠¡¶ ¡æ∑·
                 skipTyping = true;
             }
             else
             {
-                // ¥ÎªÁ ≥°≥™∏È «ÿ¥Á ø¿∫Í¡ß∆Æ »∞º∫»≠
                 StartCoroutine(ActivateNextObject());
             }
         }
     }
 
-    // ¥ÎªÁ «— ¡Ÿæø ≈∏¿Ã«Œ«œ¥¬ «‘ºˆ
     IEnumerator TypeLine()
     {
         isTyping = true;
@@ -68,32 +65,27 @@ public class IntroController : MonoBehaviour
         isTyping = false;
     }
 
-    // ¥ÎªÁ∞° ≥°≥≠ »ƒ Ω∫∆‰¿ÃΩ∫πŸ∏¶ ¥≠∑Øº≠ ø¿∫Í¡ß∆Æ∏¶ »∞º∫»≠
     IEnumerator ActivateNextObject()
     {
-        // «ˆ¿Á ¥ÎªÁ∞° ≥°≥≠ »ƒ «ÿ¥Á ø¿∫Í¡ß∆Æ∏¶ »∞º∫»≠
         if (dialogueIndex < objectsToActivate.Length)
         {
             GameObject obj = objectsToActivate[dialogueIndex];
             if (obj != null)
             {
                 obj.SetActive(true);
-                Debug.Log(obj.name + " ø¿∫Í¡ß∆Æ∞° »∞º∫»≠µ«æ˙Ω¿¥œ¥Ÿ!");
+                Debug.Log(obj.name + " Ïò§Î∏åÏ†ùÌä∏Í∞Ä ÌôúÏÑ±ÌôîÎêòÏóàÏäµÎãàÎã§!");
             }
         }
 
-        // ¥ÎªÁ ≥°≥≠ »ƒ, Ω∫∆‰¿ÃΩ∫πŸ∏¶ ¥≠∑Øº≠ ¥Ÿ¿Ω ¥ÎªÁ∑Œ ≥—æÓ∞®
         dialogueIndex++;
         if (dialogueIndex < dialogueLines.Length)
         {
-            dialogueText.text = ""; // ≈ÿΩ∫∆Æ∏¶ ∫ÒøÏ∞Ì, ¥Ÿ¿Ω ¥ÎªÁ∑Œ
+            dialogueText.text = "";
             StartCoroutine(TypeLine());
         }
         else
         {
-            // ∏µÁ ¥ÎªÁ∞° ≥°≥≠ »ƒ æ¿ ¿¸»Ø
-            Debug.Log("∏µÁ ¥ÎªÁ∞° ≥°≥µΩ¿¥œ¥Ÿ.");
-            // æ¿ ¿¸»Ø
+            Debug.Log("Î™®Îì† ÎåÄÏÇ¨Í∞Ä ÎÅùÎÇ¨ÏäµÎãàÎã§.");
             SceneManager.LoadScene(sceneToLoad);
         }
 
